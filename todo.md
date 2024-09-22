@@ -5,8 +5,8 @@
    - allow user to input a URL *
 
 2. **send http request**
-   - use the net/http package to send GET requests
-   - handle response and errors
+   - use the net/http package to send GET requests *
+   - handle response and errors *
 
 3. **check response status**
    - log the HTTP status code
