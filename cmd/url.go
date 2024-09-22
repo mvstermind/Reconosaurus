@@ -19,9 +19,8 @@ func init() {
 }
 
 func GetUrl() (string, error) {
-	if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
-		url = "https://" + url
-	}
+	url = strings.TrimSpace(url)
+	url = "http://" + url
 
 	resp, err := http.Get(url)
 	if err != nil {

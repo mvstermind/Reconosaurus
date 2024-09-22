@@ -1,12 +1,17 @@
 package main
 
 import (
+	"bufio"
+	"errors"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
 	"github.com/mvstermind/tool/cmd"
 )
+
+var urls []string
 
 func main() {
 	url, err := cmd.GetUrl()
@@ -15,32 +20,41 @@ func main() {
 		return
 	}
 
-	dir, err := os.ReadFile("./lists/dir-list.txt")
+	file, err := os.Open("./lists/dir-list.txt")
 	if err != nil {
 		log.Println("couldn't read file contents!")
 	}
+	defer file.Close()
 
-	_ = formUrls(url, dir)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		urls = append(urls, url+scanner.Text())
+	}
+
+	valid, err := checkUrlResp(urls)
+	if err != nil {
+		return
+	}
+	fmt.Println(valid)
 
 }
 
-func formUrls(baseUrl string, dirNames []byte) []string {
-	var stringified []string
-	var lc int
-	for i := 0; i < len(dirNames); i++ {
-		if dirNames[i] == '\n' {
-			if lc > 0 {
-				stringified = append(stringified, string(dirNames[i-lc:i]))
-			}
-			lc = 0
-		} else {
-			lc++
-		}
-	}
-	if lc > 0 {
-		stringified = append(stringified, string(dirNames[len(dirNames)-lc:]))
-	}
-	fmt.Println(stringified)
+func checkUrlResp(urls []string) ([]string, error) {
+	if len(urls) == 0 {
+		return nil, errors.New("url list is empty")
 
-	return nil
+	}
+	var okUrls []string
+
+	for i := 0; i < len(urls); i++ {
+		resp, err := http.Get(urls[i])
+		if err != nil {
+			return nil, err
+		} else {
+			okUrls = append(okUrls, urls[i])
+		}
+		resp.Body.Close()
+	}
+	return okUrls, nil
+
 }
