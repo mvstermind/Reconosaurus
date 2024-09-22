@@ -29,11 +29,16 @@ func formUrls(baseUrl string, dirNames []byte) []string {
 	var lc int
 	for i := 0; i < len(dirNames); i++ {
 		if dirNames[i] == '\n' {
-			stringified = append(stringified, string(dirNames[i-lc:i]))
+			if lc > 0 {
+				stringified = append(stringified, string(dirNames[i-lc:i]))
+			}
 			lc = 0
 		} else {
 			lc++
 		}
+	}
+	if lc > 0 {
+		stringified = append(stringified, string(dirNames[len(dirNames)-lc:]))
 	}
 	fmt.Println(stringified)
 
