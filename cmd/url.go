@@ -18,18 +18,16 @@ func init() {
 	}
 }
 
-func GetUrl() (string, error) {
-	url = strings.TrimSpace(url)
-	url = "http://" + url
+func GetUrl() string {
+	if !strings.HasPrefix(url, "http://") && !strings.HasPrefix(url, "https://") {
+		resp, err := http.Get("https://" + url)
 
-	resp, err := http.Get(url)
-	if err != nil {
-		return "", err
-	}
-	defer resp.Body.Close()
+		if err != nil || resp.StatusCode != http.StatusOK {
+			return "http://" + url
+		}
+		defer resp.Body.Close()
 
-	if resp.StatusCode == http.StatusOK {
-		return url, nil
+		return "https://" + url
 	}
-	return "", fmt.Errorf("failed to access URL: %s, status code: %d", url, resp.StatusCode)
+	return url
 }
