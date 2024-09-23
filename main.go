@@ -54,7 +54,6 @@ func checkUrlResp(urls []string) ([]string, error) {
 			defer wg.Done()
 			resp, err := http.Get(urlsChunk1[i])
 			if err != nil {
-				fmt.Println(urlsChunk1[i])
 				return
 			}
 			if resp.StatusCode == http.StatusOK {
@@ -70,7 +69,6 @@ func checkUrlResp(urls []string) ([]string, error) {
 			defer wg.Done()
 			resp, err := http.Get(urlsChunk2[i])
 			if err != nil {
-				fmt.Println(urlsChunk2[i])
 				return
 			}
 			if resp.StatusCode == http.StatusOK {
