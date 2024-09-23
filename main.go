@@ -43,19 +43,44 @@ func checkUrlResp(urls []string) ([]string, error) {
 		return nil, errors.New("url list is empty")
 
 	}
-	var okUrls []string
+	okUrls := make([]string, len(urls))
+	urlsChunk1 := urls[:int(len(urls)/2)+1]
+	urlsChunk2 := urls[int(len(urls)/2)+1:]
 
-	for i := 0; i < len(urls); i++ {
-		resp, err := http.Get(urls[i])
-		if err != nil {
-			return nil, err
-		}
-		if resp.StatusCode == http.StatusOK {
-			okUrls = append(okUrls, urls[i])
-		}
-
-		resp.Body.Close()
+	var wg sync.WaitGroup
+	for i := 0; i < len(urlsChunk1); i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			resp, err := http.Get(urlsChunk1[i])
+			if err != nil {
+				fmt.Println(urlsChunk1[i])
+				return
+			}
+			if resp.StatusCode == http.StatusOK {
+				okUrls = append(okUrls, urlsChunk1[i])
+			}
+			resp.Body.Close()
+		}()
 	}
+
+	for i := 0; i < len(urlsChunk2); i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			resp, err := http.Get(urlsChunk2[i])
+			if err != nil {
+				fmt.Println(urlsChunk2[i])
+				return
+			}
+			if resp.StatusCode == http.StatusOK {
+				okUrls = append(okUrls, urlsChunk2[i])
+			}
+			resp.Body.Close()
+		}()
+	}
+	wg.Wait()
+
 	return okUrls, nil
 
 }
