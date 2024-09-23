@@ -9,6 +9,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/mvstermind/tool/cmd"
 )
@@ -20,7 +21,7 @@ func main() {
 
 	file, err := os.Open("./lists/dir-list.txt")
 	if err != nil {
-		log.Println("couldn't read file contents!")
+		log.Fatalf("Couldn't read file contents: %v", err)
 	}
 	defer file.Close()
 
@@ -30,55 +31,67 @@ func main() {
 		urls = append(urls, url+"/"+strings.TrimSpace(scanner.Text()))
 	}
 
-	valid, err := checkUrlResp(urls)
-	if err != nil {
-		return
+	if err = scanner.Err(); err != nil {
+		log.Fatalf("Error reading file: %v", err)
 	}
-	fmt.Println(valid)
 
+	validUrls, err := checkUrlResp(urls)
+	if err != nil {
+		log.Fatalf("Error checking URLs: %v", err)
+	}
+	fmt.Println("valid URLs:", validUrls)
 }
 
 func checkUrlResp(urls []string) ([]string, error) {
 	if len(urls) == 0 {
-		return nil, errors.New("url list is empty")
-
+		return nil, errors.New("file dir is empty")
 	}
-	okUrls := make([]string, len(urls))
-	urlsChunk1 := urls[:int(len(urls)/2)+1]
-	urlsChunk2 := urls[int(len(urls)/2)+1:]
+
+	numWorkers := 4
+	urlsChan := make(chan string, len(urls))
+	resultsChan := make(chan string, len(urls))
 
 	var wg sync.WaitGroup
-	for i := 0; i < len(urlsChunk1); i++ {
+
+	for i := 0; i < numWorkers; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			resp, err := http.Get(urlsChunk1[i])
-			if err != nil {
-				return
+			for url := range urlsChan {
+				if checkUrl(url) {
+					resultsChan <- url
+				}
 			}
-			if resp.StatusCode == http.StatusOK {
-				okUrls = append(okUrls, urlsChunk1[i])
-			}
-			resp.Body.Close()
 		}()
 	}
 
-	for i := 0; i < len(urlsChunk2); i++ {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			resp, err := http.Get(urlsChunk2[i])
-			if err != nil {
-				return
-			}
-			if resp.StatusCode == http.StatusOK {
-				okUrls = append(okUrls, urlsChunk2[i])
-			}
-			resp.Body.Close()
-		}()
+	for _, url := range urls {
+		urlsChan <- url
 	}
+	close(urlsChan)
+
 	wg.Wait()
+	close(resultsChan)
 
-	return okUrls, nil
+	validUrls := make([]string, 0)
+	for result := range resultsChan {
+		validUrls = append(validUrls, result)
+	}
 
+	return validUrls, nil
 }
+
+func checkUrl(url string) bool {
+	client := &http.Client{Timeout: 5 * time.Second}
+	resp, err := client.Get(url)
+	if err != nil {
+		return false
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode == http.StatusOK || resp.StatusCode == http.StatusFound {
+		return true
+	}
+	return false
+}
+
