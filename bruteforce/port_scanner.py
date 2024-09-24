@@ -5,8 +5,6 @@ Scans port a.k.a poor's man nmap
 import socket
 import sys
 
-from termcolor import colored
-
 from prettify import announcement
 
 
@@ -18,6 +16,8 @@ def scan_ports(target: str, first=1, last=1024) -> list[int] | None:
     last_port: int -> last port to scan
 
     returns list[int] if everything went well, except error, then it just exits
+
+    if KeyboardInterrupt or socket.error happens it will kill whole program
     """
 
     open_ports: list[int] = []
@@ -41,3 +41,4 @@ def scan_ports(target: str, first=1, last=1024) -> list[int] | None:
 
     except socket.error:
         announcement.negative("\nHost is not responding...")
+        sys.exit()

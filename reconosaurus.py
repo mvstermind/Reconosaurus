@@ -2,6 +2,7 @@
 Main file of the program
 """
 
+import sys
 from datetime import datetime
 from typing import Any
 
@@ -73,6 +74,8 @@ def save_results_to_file(*output: Any, file: str, save_mode: str = "a") -> None:
     save_mode: str -> mode to use to modify file
     (accepts any valid that works
     with open() )
+
+    if cannot write to a file, it will kill whole program.
     """
     try:
         with open(file, save_mode) as f:
@@ -87,6 +90,7 @@ def save_results_to_file(*output: Any, file: str, save_mode: str = "a") -> None:
         announcement.negative(
             f"Cannot use '{save_mode}' as valid mode for modyfing a file"
         )
+        sys.exit()
 
 
 if __name__ == "__main__":

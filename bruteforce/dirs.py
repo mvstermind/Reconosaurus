@@ -2,6 +2,10 @@
 Opens, reads and returns a list[str] of all words from given file
 """
 
+import sys
+
+from prettify import announcement
+
 
 def read_wordlist_file_to_list(path: str, prefix: str = "") -> list[str]:
     """
@@ -13,22 +17,28 @@ def read_wordlist_file_to_list(path: str, prefix: str = "") -> list[str]:
 
     returns: list[str] -> all of words that were found inside file with
     optionally defined prefix
+
+    if path doesn't exist or is invalid
+    it exits a program
     """
-    dirs: list[str] = []
-    with open(path, "r") as file:
-        for line in file:
+    try:
+        dirs: list[str] = []
+        with open(path, "r") as file:
+            for line in file:
 
-            if prefix != "":
-                prefix = prefix.strip()
-                line = line.strip()
+                if prefix != "":
+                    prefix = prefix.strip()
+                    line = line.strip()
 
-                if "." in line:
-                    continue
+                    if "." in line:
+                        continue
+                    else:
+                        line += prefix
+
                 else:
-                    line += prefix
-
-            else:
-                line = line.strip()
-            dirs.append(line)
-
-    return dirs
+                    line = line.strip()
+                dirs.append(line)
+        return dirs
+    except Exception:
+        announcement.negative(f"'{path}' is not valid path")
+        sys.exit()

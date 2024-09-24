@@ -57,6 +57,8 @@ def brute_force_with_dirs(urls: list[str], max_workers: int = 10) -> dict[str, i
 
     returns: dict[str,int] -> returns dictionary of directories as keys with
     thier status codes as values
+
+    if KeyboardInterrupt exception happens, kill whole program
     """
     valid_resp_with_status: dict[str, int] = {}
 
@@ -93,6 +95,7 @@ def get_path_only(link: str) -> str:
     """
     Returns only /path part from url
     link: str -> full url eg https://foo.com/bar
+
     returns :str -> just path from url
     following example, this will return /bar
     """
