@@ -17,15 +17,15 @@
    - check for existence of these endpoints by sending requests *
 
 5. **check for open ports**
-   - implement a simple TCP port scanner
-   - check common ports (e.g., 80, 443, 22)
+   - implement a simple TCP port scanner* 
+   - check common ports (e.g., 80, 443, 22) *
 
 6. **output results**
-   - format and display the findings clearly
+   - format and display the findings clearly*
    - log findings to a file if desired
 
 7. **implement basic error handling**
-   - handle network errors gracefully
+   - handle network errors gracefully*
    - provide user-friendly error messages
 
 8. **add comments and documentation**
