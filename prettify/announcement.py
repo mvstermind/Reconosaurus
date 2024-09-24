@@ -1,3 +1,7 @@
+"""
+Used to print out messages to stdout but with colors
+"""
+
 from termcolor import colored
 
 

@@ -1,3 +1,7 @@
+"""
+Responsible handling requests
+"""
+
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from http import HTTPStatus
@@ -12,6 +16,11 @@ def wordlist_to_urls(wordlist: list[str], url: str) -> list[str]:
     """
     Takes a wordlist list[str] and forms urls prepated to be used
     for sending requests
+
+    wordlist: list[str] -> list of words that will be used to build url with
+    url: str -> base url used to concatenate with wordlist
+
+    returns list[str] -> list of urls combined with wordlist
     """
     if not url.startswith("https://") and not url.startswith("http://"):
         try:
@@ -41,6 +50,13 @@ def wordlist_to_urls(wordlist: list[str], url: str) -> list[str]:
 def brute_force_with_dirs(urls: list[str], max_workers: int = 10) -> dict[str, int]:
     """
     Sends requests concurently using ThreadPoolExecutor to given list of urls
+    return only urls that responded with 200 or number between 300-400
+
+    urls: list[str] -> formed urls that are used for iterating and sending requests
+    max_workers:int -> number of threads to run
+
+    returns: dict[str,int] -> returns dictionary of directories as keys with
+    thier status codes as values
     """
     valid_resp_with_status: dict[str, int] = {}
 
@@ -76,6 +92,9 @@ def brute_force_with_dirs(urls: list[str], max_workers: int = 10) -> dict[str, i
 def get_path_only(link: str) -> str:
     """
     Returns only /path part from url
+    link: str -> full url eg https://foo.com/bar
+    returns :str -> just path from url
+    following example, this will return /bar
     """
     parsed_link = urlparse(link)
     path = parsed_link.path

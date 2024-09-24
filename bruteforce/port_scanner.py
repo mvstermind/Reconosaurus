@@ -1,3 +1,7 @@
+"""
+Scans port a.k.a poor's man nmap
+"""
+
 import socket
 import sys
 

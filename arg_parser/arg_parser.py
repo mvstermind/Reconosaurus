@@ -1,3 +1,7 @@
+"""
+Reads all of command line arguments
+"""
+
 import argparse
 
 
