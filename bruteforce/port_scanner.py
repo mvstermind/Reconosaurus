@@ -4,7 +4,7 @@ import sys
 from termcolor import colored
 
 
-def scan_ports(target: str, first_port=1, last_port=1024) -> list[int] | None:
+def scan_ports(target: str, first=1, last=1024) -> list[int] | None:
     """
     Scans for open prots using given parameters
     target: str -> IP address/url of tararget
@@ -17,7 +17,7 @@ def scan_ports(target: str, first_port=1, last_port=1024) -> list[int] | None:
     open_ports: list[int] = []
     try:
         # scan every port
-        for port in range(first_port, last_port):
+        for port in range(first, last):
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             socket.setdefaulttimeout(0.5)
 

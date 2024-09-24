@@ -5,7 +5,7 @@ def parse_args() -> argparse.Namespace:
     """
     Reads argument from command line interface and returns thier value
     Required: "--url", "--type"
-    Optional: "--wordlist", "--prefix", "--scan"
+    Optional: "--wordlist", "--prefix", "--scan", "--save"
     """
 
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
@@ -52,6 +52,12 @@ def parse_args() -> argparse.Namespace:
         required=False,
         default=1024,
         type=str,
+    )
+
+    parser.add_argument(
+        "--save",
+        help="Save result to given file",
+        required=False,
     )
 
     args: argparse.Namespace = parser.parse_args()

@@ -2,7 +2,7 @@
 1. **Directory Bruteforcing**:
    - Already in tool, but add **smart wordlists** generation based on domain content.
    - **Recursive directory scanning** (check deeper nested directories automatically).
-   - Option to try different extensions (e.g., `.php`, `.html`, `.bak`, etc.).
+   - Option to try different extensions (e.g., `.php`, `.html`, `.bak`, etc.). 
 
 2. **Port Scanning**:
    - Fast **multi-threaded** port scanning (with TCP and UDP support).
@@ -59,8 +59,4 @@
 
 16. **Vulnerability Scanner Integration**:
     - Optionally include a built-in **vulnerability scanner** to check for well-known CVEs on services you detect.
-
-17. **Wireless Attack Modules**:
-    - Scan nearby WiFi networks for misconfigurations, weak encryption (WEP/WPA).
-    - Detect open or weak Bluetooth devices.
 

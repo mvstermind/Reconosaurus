@@ -22,7 +22,7 @@
 
 6. **output results**
    - format and display the findings clearly*
-   - log findings to a file if desired
+   - log findings to a file if desired*
 
 7. **implement basic error handling**
    - handle network errors gracefully*
@@ -31,8 +31,4 @@
 8. **add comments and documentation**
    - comment your code for clarity
    - write a README file explaining usage
-
-9. **test and refine**
-    - test the scanner on various websites (with permission!)
-    - refine based on feedback and findings
 

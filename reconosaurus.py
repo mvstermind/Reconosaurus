@@ -1,6 +1,5 @@
-from datetime import date, datetime
-
-from termcolor import colored
+from datetime import datetime
+from typing import Any
 
 from arg_parser.arg_parser import parse_args
 from bruteforce.dirs import read_wordlist_file_to_list
@@ -26,35 +25,53 @@ def main():
 
         # bruteforce url paths
         if args.type[i] == "dir":
+            announcement.positive("-------------------------", end="")
             announcement.positive(f"Bruteforcing target: {args.url}")
             announcement.positive(f"Started at: {str(datetime.now())}")
 
             urls: list[str] = wordlist_to_urls(wordlist=wordlist, url=args.url)
-            response_dict_w_status: dict[str, int] = brute_force_with_dirs(
+            response_status: dict[str, int] = brute_force_with_dirs(
                 urls=urls, max_workers=10
             )
             announcement.positive("Found paths:")
-            for path in response_dict_w_status:
+            for path in response_status:
                 announcement.positive(
-                    f"{path} responded with: {response_dict_w_status[path]}", end=""
+                    f"{path} responded with: {response_status[path]}", end=""
                 )
 
         # port scanning
         elif args.type[i] == "port":
-            ports_to_scan = str(args.scan)
+            ports = str(args.scan)
             print()
+            announcement.positive("-------------------------", end="")
             announcement.positive(f"Scanning Target: {args.url}")
             announcement.positive(f"Started at: {str(datetime.now())}")
 
+            open_ports: list[int] | None = []
             try:
-                ports_to_scan = int(ports_to_scan)
-                scan_ports(target=args.url, last_port=ports_to_scan)
+                ports = int(ports)
+                open_ports = scan_ports(target=args.url, last=ports)
 
             except ValueError:
-                ports_to_scan = str(ports_to_scan)
-                first_port, last_port = ports_to_scan.split("-")
+                ports = str(ports)
+                first_port, last_port = ports.split("-")
                 first_port, last_port = int(first_port), int(last_port)
-                scan_ports(target=args.url, first_port=first_port, last_port=last_port)
+                open_ports = scan_ports(
+                    target=args.url, first=first_port, last=last_port
+                )
+
+    if args.save:
+        save_results_to_file(response_status, open_ports, file=args.save)
+
+
+def save_results_to_file(*output: Any, file: str) -> None:
+    with open(file, "a") as f:
+        for content in output:
+            if isinstance(content, dict):
+                for key, value in content.items():
+                    f.write(f"{key} - {value}\n")
+            else:
+                f.write(str(content) + "\n")
 
 
 if __name__ == "__main__":
