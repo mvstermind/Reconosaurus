@@ -3,6 +3,8 @@ import sys
 
 from termcolor import colored
 
+from prettify import announcement
+
 
 def scan_ports(target: str, first=1, last=1024) -> list[int] | None:
     """
@@ -30,8 +32,8 @@ def scan_ports(target: str, first=1, last=1024) -> list[int] | None:
         return open_ports
 
     except KeyboardInterrupt:
-        print(colored("\n Exitting...", "red"))
+        announcement.negative("\nExiting")
         sys.exit()
 
     except socket.error:
-        print(colored("\n Host not responding", "red"))
+        announcement.negative("\nHost is not responding...")

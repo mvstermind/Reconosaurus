@@ -1,8 +1,11 @@
+import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from http import HTTPStatus
 from urllib.parse import urlparse
 
 import requests
+
+from prettify import announcement
 
 
 def wordlist_to_urls(wordlist: list[str], url: str) -> list[str]:
@@ -49,17 +52,23 @@ def brute_force_with_dirs(urls: list[str], max_workers: int = 10) -> dict[str, i
                 or r.status_code >= 300
                 and r.status_code < 400
             ):
+                announcement.positive("Found paths:", end="")
+                announcement.positive(f"{url} - Status Code: {r.status_code}")
                 return (get_path_only(url), r.status_code)
         except Exception:
             return None
 
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        future_to_url = {executor.submit(fetch_status, url): url for url in urls}
-        for future in as_completed(future_to_url):
-            result = future.result()
-            if result:
-                path, status_code = result
-                valid_resp_with_status[path] = status_code
+    try:
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_url = {executor.submit(fetch_status, url): url for url in urls}
+            for future in as_completed(future_to_url):
+                result = future.result()
+                if result:
+                    path, status_code = result
+                    valid_resp_with_status[path] = status_code
+    except KeyboardInterrupt:
+        announcement.negative("\nExitting...")
+        sys.exit()
 
     return valid_resp_with_status
 

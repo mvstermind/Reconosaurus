@@ -33,11 +33,6 @@ def main():
             response_status: dict[str, int] = brute_force_with_dirs(
                 urls=urls, max_workers=10
             )
-            announcement.positive("Found paths:")
-            for path in response_status:
-                announcement.positive(
-                    f"{path} responded with: {response_status[path]}", end=""
-                )
 
         # port scanning
         elif args.type[i] == "port":
