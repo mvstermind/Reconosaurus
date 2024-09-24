@@ -12,7 +12,7 @@ def wordlist_to_urls(wordlist: list[str], url: str) -> list[str]:
     """
     if not url.startswith("https://") and not url.startswith("http://"):
         try:
-            r = requests.get(f"https://{url}/")
+            r = requests.get(f"https://{url}")
             if (
                 r.status_code == HTTPStatus.OK
                 or r.status_code >= 300

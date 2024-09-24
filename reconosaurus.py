@@ -15,8 +15,7 @@ def main():
 
     urls: list[str] = wordlist_to_urls(wordlist=wordlist, url=args.url)
 
-    valid_resp: dict[str, int] = brute_force_with_dirs(urls=urls, max_workers=20)
-    print(valid_resp)
+    valid_resp: dict[str, int] = brute_force_with_dirs(urls=urls, max_workers=10)
 
 
 if __name__ == "__main__":
