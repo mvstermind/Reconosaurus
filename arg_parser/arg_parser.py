@@ -7,6 +7,7 @@ def parse_args() -> argparse.Namespace:
     Required: "--url"
     Optional: "--wordlist", "--extension"
     """
+
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         prog="Reconasaurus",
         description="Reconasaurus: The ultimate beast for brute-forcing directories, scanning ports, and hunting for vulnerabilities. Whether you're searching for hidden files, sniffing out open services, or identifying subdomains, Reconasaurus stomps through it all with prehistoric power!",
@@ -14,10 +15,20 @@ def parse_args() -> argparse.Namespace:
     )
 
     # required positional argument
+    recon_options: list[str] = ["dir", "port"]
+    parser.add_argument(
+        "-t",
+        "--type",
+        help=f"Type of operation to pefrorm",
+        choices=recon_options,
+        required=True,
+    )
+
     parser.add_argument(
         "-u",
         "--url",
         help="URL to perform attack on",
+        required=True,
     )
 
     # optional argument with a default value

@@ -1,20 +1,20 @@
 ### scanner to-do list
 
 1. **define target input**
-   - implement command-line argument parsing 
-   - allow user to input a URL 
+   - implement command-line argument parsing *
+   - allow user to input a URL *
 
 2. **send http request**
-   - use the net/http package to send GET requests 
-   - handle response and errors 
+   - use the net/http package to send GET requests *
+   - handle response and errors *
 
 3. **check response status**
-   - log the HTTP status code
-   - categorize responses (e.g., 200, 404, 500)
+   - log the HTTP status code *
+   - categorize responses (e.g., 200, 404, 500) *
 
 4. **scan for common vulnerabilities**
-   - create a list of endpoints to test (e.g., /admin, /login)
-   - check for existence of these endpoints by sending requests
+   - create a list of endpoints to test (e.g., /admin, /login) * 
+   - check for existence of these endpoints by sending requests *
 
 5. **check for open ports**
    - implement a simple TCP port scanner

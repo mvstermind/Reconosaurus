@@ -12,5 +12,6 @@ multidict==6.1.0
 pycares==4.4.0
 pycparser==2.22
 requests==2.32.3
+termcolor==2.4.0
 urllib3==2.2.3
 yarl==1.12.1
