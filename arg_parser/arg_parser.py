@@ -4,8 +4,8 @@ import argparse
 def parse_args() -> argparse.Namespace:
     """
     Reads argument from command line interface and returns thier value
-    Required: "--url"
-    Optional: "--wordlist", "--extension"
+    Required: "--url", "--type"
+    Optional: "--wordlist", "--prefix", "--scan"
     """
 
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
@@ -22,6 +22,7 @@ def parse_args() -> argparse.Namespace:
         help=f"Type of operation to pefrorm",
         choices=recon_options,
         required=True,
+        nargs="*",
     )
 
     parser.add_argument(
@@ -31,7 +32,7 @@ def parse_args() -> argparse.Namespace:
         required=True,
     )
 
-    # optional argument with a default value
+    # optional arguments
     parser.add_argument(
         "-w",
         "--wordlist",
@@ -40,10 +41,17 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "-p",
         "--prefix",
         help="Add file prefix to wordlists bruteforce",
         required=False,
+    )
+
+    parser.add_argument(
+        "--scan",
+        help="Specify range of ports, or single port to perform scan on",
+        required=False,
+        default=1024,
+        type=str,
     )
 
     args: argparse.Namespace = parser.parse_args()
