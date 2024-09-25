@@ -21,7 +21,6 @@ def parse_args() -> argparse.Namespace:
     # required positional argument
     recon_options: list[str] = ["dir", "port", "cms"]
     parser.add_argument(
-        "-t",
         "--type",
         help=f"Type of operation to pefrorm",
         choices=recon_options,
@@ -30,7 +29,6 @@ def parse_args() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "-u",
         "--url",
         help="URL to perform attack on",
         required=True,
@@ -38,7 +36,6 @@ def parse_args() -> argparse.Namespace:
 
     # optional arguments
     parser.add_argument(
-        "-w",
         "--wordlist",
         help="Directory of wordlist to use for performing dir bruteforce",
         default="./lists/dir-list.txt",

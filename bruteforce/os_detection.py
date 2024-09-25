@@ -87,14 +87,3 @@ def icmp_ping(dst_ip: str) -> None:
         )
     else:
         colorify.positive(f"ICMP response from {dst_ip} (host is up)")
-
-
-if __name__ == "__main__":
-    target_ip = "127.0.0.1"
-    ports_to_scan = [80, 443, 22, 8080]
-
-    colorify.positive("Performing ICMP Ping...")
-    icmp_ping(target_ip)
-
-    print("\nPerforming TCP SYN Scan...")
-    syn_probe_multiple_ports(target_ip, ports_to_scan)

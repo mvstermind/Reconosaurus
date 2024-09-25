@@ -47,7 +47,7 @@ def main():
             ports = str(args.scan)
             print()
             colorify.positive("-------------------------", end="")
-            colorify.positive(f"Scanning Target: {args.url}")
+            colorify.positive(f"Scanning Ports: {args.url}")
             colorify.positive(f"Started at: {str(datetime.now())}")
 
             try:
@@ -71,15 +71,17 @@ def main():
             colorify.positive("Performing ICMP Ping...")
             os_detection.icmp_ping(args.url)
 
-            port: int = 0
+            os_port: int = 0
             try:
-                port = int(args.ports)
-                os_detection.syn_probe_multiple_ports(args.url, [1, port])
+                os_port = int(args.ports)
+                colorify.positive("Performing TCP SYN Scan...")
+                os_detection.syn_probe_multiple_ports(args.url, [1, os_port])
 
             except ValueError:
-                str_port = str(port)
+                str_port = str(os_port)
                 first_port, last_port = str_port.split("-")
                 first_port, last_port = int(first_port), int(last_port)
+                colorify.positive("Performing TCP SYN Scan...")
                 os_detection.syn_probe_multiple_ports(args.url, [first_port, last_port])
 
     if args.save:
