@@ -38,7 +38,7 @@ Because dinosaurs are cool, and hacking is even cooler. Combine the two? You've 
 
 3. **Run the beast**:
    ```bash
-   python main.py --type dir --url some-target.com
+   python reconosaurus.py --type dir --url some-target.com
    ```
 
    Or, you know, pass in the arguments you actually want. Speaking of...
@@ -71,17 +71,17 @@ Here’s how you can talk to Reconasaurus without getting eaten:
 
 ## Example Usage (for when you just want to see how it works without reading):
 ```bash
-python main.py --url https://suspicioustarget.com --type dir --wordlist ./custom-list.txt --save report.txt
+python reconosaurus.py --url https://suspicioustarget.com --type dir --wordlist ./custom-list.txt --save report.txt
 ```
 *Translation:* Reconasaurus is going to brute-force the heck out of `https://suspicioustarget.com`, using a custom wordlist, and save the carnage to `report.txt`.
 
 ```bash
-python main.py --url http://target.com --type port --scan 1-65535
+python reconosaurus.py --url http://target.com --type port --scan 1-65535
 ```
 *Translation:* Reconasaurus is knocking on every port on `http://target.com` from 1 to 65535. It's like trick-or-treating but much scarier.
 
 ```bash
-python main.py --url https://someblog.com --type cms
+python reconosaurus.py --url https://someblog.com --type cms
 ```
 *Translation:* Our lovely beast is about to tell you which CMS this website is running—WordPress, Joomla, or something only dinosaurs remember.
 
