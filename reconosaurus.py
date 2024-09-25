@@ -7,6 +7,7 @@ from datetime import datetime
 
 import save_output as save
 from arg_parser.arg_parser import parse_args
+from bruteforce import cms
 from bruteforce.dirs import read_wordlist_file
 from bruteforce.port_scanner import scan_ports
 from bruteforce.request import brute_force_w_dir, wordlist_to_urls
@@ -22,6 +23,9 @@ def main():
         wordlist: list[str] = read_wordlist_file(path=args.wordlist)
 
     ascii_art.display_name(target=args.url, recon_type=args.type)
+
+    # initalize variables, in case of writing to a file so it won't crash
+    response_status, open_ports, cms_detected = None, None, None
 
     # quirky way of finding all of recon types user picked. ik it's shitty
     for i in range(len(args.type)):
@@ -58,8 +62,13 @@ def main():
                     target=args.url, first=first_port, last=last_port
                 )
 
+        elif args.type[i] == "cms":
+            colorify.positive("-------------------------", end="")
+            colorify.positive(f"Scanning {args.url} for CMS")
+            cms_detected: str = cms.detect(url=args.url)
+
     if args.save:
-        save.results_to_file(response_status, open_ports, file=args.save)
+        save.results_to_file(response_status, open_ports, cms_detected, file=args.save)
 
 
 if __name__ == "__main__":

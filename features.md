@@ -38,8 +38,6 @@
    - Bruteforce common API endpoints or paths.
    - Check for open GraphQL APIs and enumerate their schema.
 
-10. **Screenshot Utility**:
-    - Take screenshots of HTTP(S) responses, useful for quickly identifying admin panels, etc.
     
 11. **OS Fingerprinting**:
     - Guess the target’s OS based on open ports, services, and responses (e.g., TTL values, OS banners).

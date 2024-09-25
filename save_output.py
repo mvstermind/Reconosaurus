@@ -8,12 +8,12 @@ from typing import Any
 from prettify import colorify
 
 
-def results_to_file(*output: Any, file: str, save_mode: str = "a") -> None:
+def results_to_file(*output: list[Any], file: str, save_mode: str = "a") -> None:
     """
     Saves any given data to a file, if not provided with save_mode,
     data will be appended to a file by default
 
-    *output: Any -> any given output from user to be stored insde a file
+    *output: list[Any] -> list of given output from user to be stored insde a file
     file: str -> file to write all of the given content to
     save_mode: str -> mode to use to modify file
     (accepts any valid that works
@@ -24,6 +24,8 @@ def results_to_file(*output: Any, file: str, save_mode: str = "a") -> None:
     try:
         with open(file, save_mode) as f:
             for content in output:
+                if content == None:
+                    continue
                 if isinstance(content, dict):
                     for key, value in content.items():
                         f.write(f"{key} - {value}\n")

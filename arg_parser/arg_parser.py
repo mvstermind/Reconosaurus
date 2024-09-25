@@ -19,7 +19,7 @@ def parse_args() -> argparse.Namespace:
     )
 
     # required positional argument
-    recon_options: list[str] = ["dir", "port"]
+    recon_options: list[str] = ["dir", "port", "cms"]
     parser.add_argument(
         "-t",
         "--type",
