@@ -9,7 +9,7 @@ def parse_args() -> argparse.Namespace:
     """
     Reads argument from command line interface and returns thier value
     Required: "--url", "--type"
-    Optional: "--wordlist", "--prefix", "--scan", "--save"
+    Optional: "--wordlist", "--prefix", "--scan", "--save", "--os"
     """
 
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
@@ -61,6 +61,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--save",
         help="Save result to given file",
+        required=False,
+    )
+
+    parser.add_argument(
+        "--os",
+        help="Find operating system on target's machine",
         required=False,
     )
 

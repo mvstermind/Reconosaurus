@@ -4,23 +4,9 @@
    - **Recursive directory scanning** (check deeper nested directories automatically).
    - Option to try different extensions (e.g., `.php`, `.html`, `.bak`, etc.). 
 
-2. **Port Scanning**:
-   - Fast **multi-threaded** port scanning (with TCP and UDP support).
-   - **Service detection** on open ports (what services are running, e.g., HTTP, SSH).
-   - **Banner grabbing** for service versions.
-   - Detect **hidden services** or non-standard ports (services on unusual ports).
-
-3. **Subdomain Enumeration**:
-   - Find subdomains through **brute force** or using OSINT methods (APIs like VirusTotal or Shodan).
-   - **Resolve IPs** and check for hosting misconfigurations.
-
 4. **SSL/TLS Analysis**:
    - Scan for weak or outdated SSL/TLS configurations (e.g., check for SSLv3 or RC4 ciphers).
    - Fetch **certificate information**, including expiration dates.
-
-5. **Web Application Fingerprinting**:
-   - Detect the underlying web framework (e.g., WordPress, Django, Laravel) and possible vulnerabilities.
-   - Identify CMS versions and plugins that may be outdated or vulnerable.
 
 6. **File Inclusion Vulnerabilities**:
    - Detect Local File Inclusion (LFI) and Remote File Inclusion (RFI) vulnerabilities.
@@ -44,13 +30,6 @@
 
 12. **Passive Recon**:
     - Include a module for passive reconnaissance, using public sources like WHOIS, DNS records, etc.
-
-13. **Social Engineering Tools**:
-    - Build basic utilities for phishing simulations or harvesting public profiles for usernames/emails.
-
-14. **Automation and Reporting**:
-    - Generate reports (HTML/PDF format) with the scan results and potential vulnerabilities.
-    - Include an option to auto-save the results in a structured format like JSON for later processing.
 
 15. **Stealth Mode**:
     - Options to perform stealthy scans, like scanning using fragmented packets, slow scanning (evade detection systems).

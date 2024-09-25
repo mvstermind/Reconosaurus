@@ -2,16 +2,17 @@
 Main file of the program
 """
 
-import sys
 from datetime import datetime
 
 import save_output as save
 from arg_parser.arg_parser import parse_args
-from bruteforce import cms
+from bruteforce import cms, os_detection
 from bruteforce.dirs import read_wordlist_file
 from bruteforce.port_scanner import scan_ports
 from bruteforce.request import brute_force_w_dir, wordlist_to_urls
 from prettify import ascii_art, colorify
+
+open_ports: list[int] | None = []
 
 
 def main():
@@ -49,7 +50,6 @@ def main():
             colorify.positive(f"Scanning Target: {args.url}")
             colorify.positive(f"Started at: {str(datetime.now())}")
 
-            open_ports: list[int] | None = []
             try:
                 ports = int(ports)
                 open_ports = scan_ports(target=args.url, last=ports)
@@ -66,6 +66,21 @@ def main():
             colorify.positive("-------------------------", end="")
             colorify.positive(f"Scanning {args.url} for CMS")
             cms_detected: str = cms.detect(url=args.url)
+
+        elif args.os and args.ports:
+            colorify.positive("Performing ICMP Ping...")
+            os_detection.icmp_ping(args.url)
+
+            port: int = 0
+            try:
+                port = int(args.ports)
+                os_detection.syn_probe_multiple_ports(args.url, [1, port])
+
+            except ValueError:
+                str_port = str(port)
+                first_port, last_port = str_port.split("-")
+                first_port, last_port = int(first_port), int(last_port)
+                os_detection.syn_probe_multiple_ports(args.url, [first_port, last_port])
 
     if args.save:
         save.results_to_file(response_status, open_ports, cms_detected, file=args.save)
