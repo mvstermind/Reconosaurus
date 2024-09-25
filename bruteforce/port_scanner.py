@@ -5,7 +5,7 @@ Scans port a.k.a poor's man nmap
 import socket
 import sys
 
-from prettify import announcement
+from prettify import colorify
 
 
 def scan_ports(target: str, first=1, last=1024) -> list[int] | None:
@@ -36,9 +36,9 @@ def scan_ports(target: str, first=1, last=1024) -> list[int] | None:
         return open_ports
 
     except KeyboardInterrupt:
-        announcement.negative("\nExiting")
+        colorify.negative("\nExiting")
         sys.exit()
 
     except socket.error:
-        announcement.negative("\nHost is not responding...")
+        colorify.negative("\nHost is not responding...")
         sys.exit()

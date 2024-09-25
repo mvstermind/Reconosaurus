@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 
 import requests
 
-from prettify import announcement
+from prettify import colorify
 
 
 def wordlist_to_urls(wordlist: list[str], url: str) -> list[str]:
@@ -47,7 +47,7 @@ def wordlist_to_urls(wordlist: list[str], url: str) -> list[str]:
     return urls
 
 
-def brute_force_with_dirs(urls: list[str], max_workers: int = 10) -> dict[str, int]:
+def brute_force_w_dir(urls: list[str], max_workers: int = 10) -> dict[str, int]:
     """
     Sends requests concurently using ThreadPoolExecutor to given list of urls
     return only urls that responded with 200 or number between 300-400
@@ -70,8 +70,8 @@ def brute_force_with_dirs(urls: list[str], max_workers: int = 10) -> dict[str, i
                 or r.status_code >= 300
                 and r.status_code < 400
             ):
-                announcement.positive("Found paths:", end="")
-                announcement.positive(f"{url} - Status Code: {r.status_code}")
+                colorify.positive("Found paths:", end="")
+                colorify.positive(f"{url} - Status Code: {r.status_code}")
                 return (get_path_only(url), r.status_code)
         except Exception:
             return None
@@ -85,7 +85,7 @@ def brute_force_with_dirs(urls: list[str], max_workers: int = 10) -> dict[str, i
                     path, status_code = result
                     valid_resp_with_status[path] = status_code
     except KeyboardInterrupt:
-        announcement.negative("\nExitting...")
+        colorify.negative("\nExitting...")
         sys.exit()
 
     return valid_resp_with_status

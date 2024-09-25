@@ -4,24 +4,22 @@ Main file of the program
 
 import sys
 from datetime import datetime
-from typing import Any
 
+import save_output as save
 from arg_parser.arg_parser import parse_args
-from bruteforce.dirs import read_wordlist_file_to_list
+from bruteforce.dirs import read_wordlist_file
 from bruteforce.port_scanner import scan_ports
-from bruteforce.request import brute_force_with_dirs, wordlist_to_urls
-from prettify import announcement, ascii_art
+from bruteforce.request import brute_force_w_dir, wordlist_to_urls
+from prettify import ascii_art, colorify
 
 
 def main():
     # agrs fields: url ,wordlist, prefix, scan
     args = parse_args()
     if args.prefix:
-        wordlist: list[str] = read_wordlist_file_to_list(
-            path=args.wordlist, prefix=args.prefix
-        )
+        wordlist: list[str] = read_wordlist_file(path=args.wordlist, prefix=args.prefix)
     else:
-        wordlist: list[str] = read_wordlist_file_to_list(path=args.wordlist)
+        wordlist: list[str] = read_wordlist_file(path=args.wordlist)
 
     ascii_art.display_name(target=args.url, recon_type=args.type)
 
@@ -30,12 +28,12 @@ def main():
 
         # bruteforce url paths
         if args.type[i] == "dir":
-            announcement.positive("-------------------------", end="")
-            announcement.positive(f"Bruteforcing target: {args.url}")
-            announcement.positive(f"Started at: {str(datetime.now())}")
+            colorify.positive("-------------------------", end="")
+            colorify.positive(f"Bruteforcing target: {args.url}")
+            colorify.positive(f"Started at: {str(datetime.now())}")
 
             urls: list[str] = wordlist_to_urls(wordlist=wordlist, url=args.url)
-            response_status: dict[str, int] = brute_force_with_dirs(
+            response_status: dict[str, int] = brute_force_w_dir(
                 urls=urls, max_workers=10
             )
 
@@ -43,9 +41,9 @@ def main():
         elif args.type[i] == "port":
             ports = str(args.scan)
             print()
-            announcement.positive("-------------------------", end="")
-            announcement.positive(f"Scanning Target: {args.url}")
-            announcement.positive(f"Started at: {str(datetime.now())}")
+            colorify.positive("-------------------------", end="")
+            colorify.positive(f"Scanning Target: {args.url}")
+            colorify.positive(f"Started at: {str(datetime.now())}")
 
             open_ports: list[int] | None = []
             try:
@@ -61,36 +59,7 @@ def main():
                 )
 
     if args.save:
-        save_results_to_file(response_status, open_ports, file=args.save)
-
-
-def save_results_to_file(*output: Any, file: str, save_mode: str = "a") -> None:
-    """
-    Saves any given data to a file, if not provided with save_mode,
-    data will be appended to a file by default
-
-    *output: Any -> any given output from user to be stored insde a file
-    file: str -> file to write all of the given content to
-    save_mode: str -> mode to use to modify file
-    (accepts any valid that works
-    with open() )
-
-    if cannot write to a file, it will kill whole program.
-    """
-    try:
-        with open(file, save_mode) as f:
-            for content in output:
-                if isinstance(content, dict):
-                    for key, value in content.items():
-                        f.write(f"{key} - {value}\n")
-                else:
-                    f.write(str(content) + "\n")
-
-    except Exception:
-        announcement.negative(
-            f"Cannot use '{save_mode}' as valid mode for modyfing a file"
-        )
-        sys.exit()
+        save.results_to_file(response_status, open_ports, file=args.save)
 
 
 if __name__ == "__main__":

@@ -4,10 +4,10 @@ Opens, reads and returns a list[str] of all words from given file
 
 import sys
 
-from prettify import announcement
+from prettify import colorify
 
 
-def read_wordlist_file_to_list(path: str, prefix: str = "") -> list[str]:
+def read_wordlist_file(path: str, prefix: str = "") -> list[str]:
     """
     Reads given file
     Extracts all of the data from it and turns it into list[str]
@@ -40,5 +40,5 @@ def read_wordlist_file_to_list(path: str, prefix: str = "") -> list[str]:
                 dirs.append(line)
         return dirs
     except Exception:
-        announcement.negative(f"'{path}' is not valid path")
+        colorify.negative(f"'{path}' is not valid path")
         sys.exit()
